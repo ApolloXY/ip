@@ -232,10 +232,17 @@ $user_browser   = getBrowser();
 $ua=getBB();
 $vv = $ua['version'];
 $vv = explode(".",$vv);
-//$device_details = "".$user_ip."/".$user_browser."/".$user_os."";
+
 $jsondata1 = (unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$user_ip)));
 $date = new DateTime("now", new DateTimeZone($jsondata1['geoplugin_timezone']) );
 $ccode = strtolower( $jsondata1['geoplugin_countryCode']).'.png';
+$isMobile="false";
+function isMobile() {
+    return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+}
+if(isMobile()){
+    $isMobile="true";
+}
 
 $device_details = array(
     "ip"=> $user_ip , 
@@ -269,6 +276,8 @@ $device_details = array(
     "latitude"=> $jsondata1['geoplugin_latitude'], 
     "longitude"=> $jsondata1['geoplugin_longitude'], 
     "currencySymbol"=> $jsondata1['geoplugin_currencySymbol'],
+    "isMobile" =>     $isMobile,
+
 );
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode($device_details, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
