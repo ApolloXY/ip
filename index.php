@@ -233,7 +233,7 @@ $ua=getBB();
 $vv = $ua['version'];
 $vv = explode(".",$vv);
 //$device_details = "".$user_ip."/".$user_browser."/".$user_os."";
-$jsondata1 = (unserialize(file_get_contents('https://www.geoplugin.net/php.gp?ip='.$user_ip)));
+$jsondata1 = (unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$user_ip)));
 $date = new DateTime("now", new DateTimeZone($jsondata1['geoplugin_timezone']) );
 $ccode = strtolower( $jsondata1['geoplugin_countryCode']).'.png';
 
