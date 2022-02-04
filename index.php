@@ -1,5 +1,3 @@
-
-
 <?php
 // Allow from any origin
     if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -22,11 +20,7 @@
     
         exit(0);
     }
-    
-   // echo "You have CORS!";
 
-?>
-<?php
 function getUserIP(){
     // Get real visitor IP behind CloudFlare network
     if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) {
@@ -239,10 +233,39 @@ $ua=getBB();
 $vv = $ua['version'];
 $vv = explode(".",$vv);
 
-//$device_details = "".$user_ip."/".$user_browser."/".$user_os."";
-
-$device_details = array("ip"=> $user_ip , "os"=> $user_os , "browser"=> $user_browser, "version"=> $vv[0], "origin"=> $origin, "device"=> $device_name);
-
+$jsondata1 = (unserialize(file_get_contents('https://www.geoplugin.net/php.gp?ip='.$user_ip)));
+$date = new DateTime("now", new DateTimeZone($jsondata1['geoplugin_timezone']) );
+$device_details = array(
+    "ip"=> $user_ip , 
+    "os"=> $user_os , 
+    "browser"=> $user_browser, 
+    "version"=> $vv[0], 
+    "origin"=> $origin, 
+    "device"=> $device_name,
+    "unix"=> ''.time().'', 
+    "date"=> $date->format('d/m/Y'),
+    "time"=> $date->format('H:i:s'),
+    "H"=> $date->format('H'),
+    "h"=> $date->format('h'),
+    "i"=> $date->format('i'),
+    "s"=> $date->format('s'),
+    "a"=> $date->format('a'),
+    "Y"=> $date->format('Y'),
+    "m"=> $date->format('m'),
+    "d"=> $date->format('d'),
+    "day"=> $date->format('l'),
+    "city"=> $jsondata1['geoplugin_city'], 
+    "region"=> $jsondata1['geoplugin_region'], 
+    "regionCode"=> $jsondata1['geoplugin_regionCode'], 
+    "country"=> $jsondata1['geoplugin_countryName'], 
+    "countryCode"=> $jsondata1['geoplugin_countryCode'], 
+    "continent"=> $jsondata1['geoplugin_continentName'], 
+    "timezone"=> $jsondata1['geoplugin_timezone'], 
+    "latitude"=> $jsondata1['geoplugin_latitude'], 
+    "longitude"=> $jsondata1['geoplugin_longitude'], 
+    "currencySymbol"=> $jsondata1['geoplugin_currencySymbol'],
+);
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode($device_details, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
 ?>
