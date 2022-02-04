@@ -59,7 +59,28 @@ $origin=null;/////////////////
 if(isset($_SERVER['HTTP_REFERER'])) {
     $origin = $_SERVER['HTTP_REFERER'];     
 }
- 
+
+$pos1 = strpos($user_agent, '(')+1;
+$pos2 = strpos($user_agent, ')')-$pos1;
+$part = substr($user_agent, $pos1, $pos2);
+$parts = explode(" ", $part);
+$p1=null; $p2=null; $p3=null;$p4=null;
+
+if(isset($parts[2])){
+    $p1 = $parts[2];
+}
+if(isset($parts[3])){
+    $p2 = $parts[3];
+}
+if(isset($parts[4])){
+    $p3 = $parts[4];
+}
+if(isset($parts[6])){
+    $p4 = $parts[6];
+} 
+
+$device_name = $p2.' '.$p3;
+
 function getOS() { 
 
     global $user_agent;
@@ -220,7 +241,7 @@ $vv = explode(".",$vv);
 
 //$device_details = "".$user_ip."/".$user_browser."/".$user_os."";
 
-$device_details = array("ip"=> $user_ip , "os"=> $user_os , "browser"=> $user_browser, "version"=> $vv[0], "origin"=> $origin);
+$device_details = array("ip"=> $user_ip , "os"=> $user_os , "browser"=> $user_browser, "version"=> $vv[0], "origin"=> $origin, "device"=> $device_name);
 
 echo json_encode($device_details);
 
