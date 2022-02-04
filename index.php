@@ -232,9 +232,11 @@ $user_browser   = getBrowser();
 $ua=getBB();
 $vv = $ua['version'];
 $vv = explode(".",$vv);
-
+//$device_details = "".$user_ip."/".$user_browser."/".$user_os."";
 $jsondata1 = (unserialize(file_get_contents('https://www.geoplugin.net/php.gp?ip='.$user_ip)));
 $date = new DateTime("now", new DateTimeZone($jsondata1['geoplugin_timezone']) );
+$ccode = strtolower( $jsondata1['geoplugin_countryCode']).'.png';
+
 $device_details = array(
     "ip"=> $user_ip , 
     "os"=> $user_os , 
@@ -259,6 +261,9 @@ $device_details = array(
     "regionCode"=> $jsondata1['geoplugin_regionCode'], 
     "country"=> $jsondata1['geoplugin_countryName'], 
     "countryCode"=> $jsondata1['geoplugin_countryCode'], 
+    "lFlag"=> "https://flagcdn.com/128x96/".$ccode,
+    "mFlag"=> "https://flagcdn.com/64x48/".$ccode,
+    "sFlag"=> "https://flagcdn.com/32x24/".$ccode,
     "continent"=> $jsondata1['geoplugin_continentName'], 
     "timezone"=> $jsondata1['geoplugin_timezone'], 
     "latitude"=> $jsondata1['geoplugin_latitude'], 
