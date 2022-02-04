@@ -243,6 +243,6 @@ $vv = explode(".",$vv);
 
 $device_details = array("ip"=> $user_ip , "os"=> $user_os , "browser"=> $user_browser, "version"=> $vv[0], "origin"=> $origin, "device"=> $device_name);
 
-echo json_encode($device_details);
+echo json_encode($device_details, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
 
 ?>
